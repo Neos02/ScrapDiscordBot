@@ -1,11 +1,12 @@
 {
   "name": "scrapdiscordbot",
   "description": "A discord bot named Scrap",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy-commands": "node deploy-commands.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,6 @@
     "url": "https://github.com/Neos02/ScrapDiscordBot/issues"
   },
   "homepage": "https://github.com/Neos02/ScrapDiscordBot#readme",
-  "type": "module",
   "dependencies": {
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1"
