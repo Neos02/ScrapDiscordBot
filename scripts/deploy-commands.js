@@ -7,7 +7,7 @@ require("dotenv").config();
 const commands = [];
 
 // Grab all the command folders from the commands directory
-const foldersPath = path.join(__dirname, "commands");
+const foldersPath = path.join(__dirname, "..", "commands");
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
