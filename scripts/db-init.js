@@ -8,6 +8,9 @@ const sequelize = new Sequelize("database", "username", "password", {
 });
 
 require("../models/Reactions.js")(sequelize, Sequelize.DataTypes);
+require("../models/FreeGames.js")(sequelize, Sequelize.DataTypes);
+require("../models/FreeGamesChannels.js")(sequelize, Sequelize.DataTypes);
+require("../models/FreeGamesRoles.js")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 

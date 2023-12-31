@@ -21,6 +21,7 @@ const client = new Client({
 client.commands = new Collection();
 client.cooldowns = new Collection();
 
+// Get commands
 const foldersPath = path.join(__dirname, "commands");
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -45,6 +46,7 @@ for (const folder of commandFolders) {
   }
 }
 
+// Get events
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
   .readdirSync(eventsPath)

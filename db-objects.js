@@ -11,5 +11,17 @@ const Reactions = require("./models/Reactions.js")(
   sequelize,
   Sequelize.DataTypes
 );
+const FreeGames = require("./models/FreeGames.js")(
+  sequelize,
+  Sequelize.DataTypes
+);
+const FreeGamesChannels = require("./models/FreeGamesChannels.js")(
+  sequelize,
+  Sequelize.DataTypes
+);
+const FreeGamesRoles = require("./models/FreeGamesRoles.js")(
+  sequelize,
+  Sequelize.DataTypes
+);
 
-module.exports = { Reactions };
+module.exports = { FreeGames, FreeGamesChannels, FreeGamesRoles, Reactions };
