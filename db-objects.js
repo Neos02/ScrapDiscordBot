@@ -1,4 +1,6 @@
 const Sequelize = require("sequelize");
+const { loadDirectoryScripts } = require("./utils/file-loader.js");
+const { slugToPascal } = require("./utils/text.js");
 
 const sequelize = new Sequelize("database", "username", "password", {
   host: "localhost",
@@ -7,21 +9,12 @@ const sequelize = new Sequelize("database", "username", "password", {
   storage: "database.sqlite",
 });
 
-const Reactions = require("./models/Reactions.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
-const FreeGames = require("./models/FreeGames.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
-const FreeGamesChannels = require("./models/FreeGamesChannels.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
-const FreeGamesRoles = require("./models/FreeGamesRoles.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
+const models = {};
 
-module.exports = { FreeGames, FreeGamesChannels, FreeGamesRoles, Reactions };
+loadDirectoryScripts("models", (object) => {
+  const model = object(sequelize, Sequelize.DataTypes);
+
+  models[slugToPascal(model.name)] = model;
+});
+
+module.exports = models;

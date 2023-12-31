@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const { loadDirectoryScripts } = require("../utils/file-loader.js");
 
 const sequelize = new Sequelize("database", "username", "password", {
   host: "localhost",
@@ -7,10 +8,9 @@ const sequelize = new Sequelize("database", "username", "password", {
   storage: "database.sqlite",
 });
 
-require("../models/Reactions.js")(sequelize, Sequelize.DataTypes);
-require("../models/FreeGames.js")(sequelize, Sequelize.DataTypes);
-require("../models/FreeGamesChannels.js")(sequelize, Sequelize.DataTypes);
-require("../models/FreeGamesRoles.js")(sequelize, Sequelize.DataTypes);
+loadDirectoryScripts("models", (model) => {
+  model(sequelize, Sequelize.DataTypes);
+});
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
