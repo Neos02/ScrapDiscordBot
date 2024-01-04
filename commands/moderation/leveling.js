@@ -8,7 +8,7 @@ const { LevelRoles } = require("../../db-objects.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("configure-leveling")
+    .setName("leveling")
     .setDescription("Update settings for the leveling system")
     .addSubcommand((subcommand) =>
       subcommand
@@ -36,7 +36,7 @@ module.exports = {
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("The role to give")
+            .setDescription("The role to remove")
             .setRequired(true)
         )
     )
