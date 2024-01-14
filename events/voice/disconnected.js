@@ -9,7 +9,6 @@ module.exports = {
   async execute(guildId, prevState, state) {
     const connection = getVoiceConnection(guildId);
 
-    console.log("Connection is in the Disconnected state!");
     try {
       await Promise.race([
         entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
