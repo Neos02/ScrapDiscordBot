@@ -1,5 +1,5 @@
 const { formatEmoji, Events } = require("discord.js");
-const { Reactions } = require("../db-objects.js");
+const { Reactions } = require("../../db-objects.js");
 
 module.exports = {
   name: Events.MessageReactionRemove,

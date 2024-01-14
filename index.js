@@ -50,7 +50,7 @@ for (const folder of commandFolders) {
 }
 
 // Get events
-loadDirectoryScripts("events", (event) => {
+loadDirectoryScripts("events/discordjs", (event) => {
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args));
   } else {

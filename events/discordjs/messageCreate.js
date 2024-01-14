@@ -6,8 +6,8 @@ const {
   CountingRoles,
   CountingUsers,
   Counts,
-} = require("../db-objects.js");
-const { level } = require("../utils/leveling.js");
+} = require("../../db-objects.js");
+const { level } = require("../../utils/leveling.js");
 
 const XP_PER_MESSAGE = 10;
 

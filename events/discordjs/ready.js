@@ -7,7 +7,7 @@ module.exports = {
   once: true,
   execute(client) {
     // Get listeners
-    const listenersPath = path.join(__dirname, "..", "listeners");
+    const listenersPath = path.join(__dirname, "..", "..", "listeners");
     const listenerFiles = fs
       .readdirSync(listenersPath)
       .filter((file) => file.endsWith(".js"));

@@ -1,5 +1,5 @@
 const { Events } = require("discord.js");
-const { AutoRoles } = require("../db-objects.js");
+const { AutoRoles } = require("../../db-objects.js");
 
 module.exports = {
   name: Events.GuildMemberAdd,
