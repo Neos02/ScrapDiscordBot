@@ -1,10 +1,7 @@
 const { bold, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const {
-  createAudioPlayer,
-  createAudioResource,
-  NoSubscriberBehavior,
-} = require("@discordjs/voice");
-const { createVoiceConnection } = require("../../utils/voice.js");
+const { createAudioResource } = require("@discordjs/voice");
+const { createVoiceConnection, createPlayer } = require("../../utils/voice.js");
+const AudioQueue = require("../../utils/queue.js");
 const { ytSearch } = require("../../utils/youtube.js");
 const ytdl = require("ytdl-core");
 
@@ -34,6 +31,8 @@ module.exports = {
       adapterCreator: interaction.channel.guild.voiceAdapterCreator,
     });
 
+    // console.log(connection);
+
     interaction.deferReply();
 
     ytSearch(song)
@@ -43,19 +42,28 @@ module.exports = {
         const stream = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
           filter: "audioonly",
         });
-        const player = createAudioPlayer({
-          behaviors: { noSubscriber: NoSubscriberBehavior.Pause },
-        });
         const resource = createAudioResource(stream);
+        let embed;
 
-        connection.subscribe(player);
-        player.play(resource);
+        if (AudioQueue.isPlaying(interaction.guild.id)) {
+          AudioQueue.enqueue(interaction.guild.id, resource);
 
-        const embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(
-            `Playing ${bold(title)} in ${interaction.member.voice.channel}`
-          );
+          embed = new EmbedBuilder()
+            .setColor("Blurple")
+            .setDescription(`Added ${bold(title)} to queue!`);
+        } else {
+          const player = createPlayer(interaction.guild.id);
+
+          AudioQueue.setIsPlaying(interaction.guild.id, true);
+          connection.subscribe(player);
+          player.play(resource);
+
+          embed = new EmbedBuilder()
+            .setColor("Blurple")
+            .setDescription(
+              `Playing ${bold(title)} in ${interaction.member.voice.channel}`
+            );
+        }
 
         interaction.editReply({ embeds: [embed] });
       })

@@ -1,4 +1,5 @@
-const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice");
+const { joinVoiceChannel, createAudioPlayer } = require("@discordjs/voice");
+const AudioQueue = require("../utils/queue.js");
 const { loadDirectoryScripts } = require("./file-loader.js");
 
 function createVoiceConnection({ channelId, guildId, adapterCreator }) {
@@ -11,4 +12,14 @@ function createVoiceConnection({ channelId, guildId, adapterCreator }) {
   return connection;
 }
 
-module.exports = { createVoiceConnection };
+function createPlayer(guildId) {
+  const player = AudioQueue.getPlayer(guildId);
+
+  loadDirectoryScripts("events/audioplayer", (event) => {
+    player.on(event.name, (...args) => event.execute(guildId, ...args));
+  });
+
+  return player;
+}
+
+module.exports = { createVoiceConnection, createPlayer };
