@@ -4,8 +4,8 @@ const AudioQueue = require("../../utils/queue.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("skip")
-    .setDescription("Skips the currently playing song"),
+    .setName("pause")
+    .setDescription("Pauses the music"),
   async execute(interaction) {
     if (!interaction.member.voice.channelId) {
       return await interaction.reply({
@@ -22,17 +22,12 @@ module.exports = {
     }
 
     const player = createPlayer(interaction.guild.id);
-    const nextResource = AudioQueue.dequeue(interaction.guild.id);
 
-    if (nextResource) {
-      player.play(nextResource);
-    } else {
-      AudioQueue.destroyPlayer(interaction.guild.id);
-    }
+    player.pause();
 
     const embed = new EmbedBuilder()
       .setColor("Blurple")
-      .setDescription("Skipped!");
+      .setDescription("Paused!");
 
     return await interaction.reply({ embeds: [embed], ephemeral: true });
   },
