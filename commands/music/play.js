@@ -31,8 +31,6 @@ module.exports = {
       adapterCreator: interaction.channel.guild.voiceAdapterCreator,
     });
 
-    // console.log(connection);
-
     interaction.deferReply();
 
     ytSearch(song)

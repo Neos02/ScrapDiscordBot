@@ -1,4 +1,5 @@
 const { createAudioPlayer, NoSubscriberBehavior } = require("@discordjs/voice");
+const { loadDirectoryScripts } = require("./file-loader.js");
 
 class AudioQueue {
   static queue = {};
@@ -34,10 +35,23 @@ class AudioQueue {
         }),
         isPlaying: false,
       };
+
+      loadDirectoryScripts("events/audioplayer", (event) => {
+        this.players[guildId].player.on(event.name, (...args) =>
+          event.execute(guildId, ...args)
+        );
+      });
     }
 
     return this.players[guildId].player;
   };
+
+  static destroyPlayer(guildId) {
+    if (this.players[guildId]) {
+      this.players[guildId].player.stop();
+      delete this.players[guildId];
+    }
+  }
 
   static isPlaying = (guildId) => {
     return this.players[guildId]?.isPlaying;

@@ -13,13 +13,7 @@ function createVoiceConnection({ channelId, guildId, adapterCreator }) {
 }
 
 function createPlayer(guildId) {
-  const player = AudioQueue.getPlayer(guildId);
-
-  loadDirectoryScripts("events/audioplayer", (event) => {
-    player.on(event.name, (...args) => event.execute(guildId, ...args));
-  });
-
-  return player;
+  return AudioQueue.getPlayer(guildId);
 }
 
 module.exports = { createVoiceConnection, createPlayer };

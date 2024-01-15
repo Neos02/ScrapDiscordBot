@@ -3,6 +3,7 @@ const {
   getVoiceConnection,
   entersState,
 } = require("@discordjs/voice");
+const AudioQueue = require("../../utils/queue.js");
 
 module.exports = {
   name: VoiceConnectionStatus.Disconnected,
@@ -18,6 +19,7 @@ module.exports = {
     } catch (error) {
       // Seems to be a real disconnect which SHOULDN'T be recovered from
       connection.destroy();
+      AudioQueue.destroyPlayer(guildId);
     }
   },
 };
