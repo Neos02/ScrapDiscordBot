@@ -1,5 +1,4 @@
 const {
-  bold,
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,

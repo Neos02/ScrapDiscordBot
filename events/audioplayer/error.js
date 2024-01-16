@@ -4,7 +4,6 @@ const AudioQueue = require("../../utils/queue.js");
 module.exports = {
   name: "error",
   execute(guildId, error) {
-    console.log("Audio player is in the Error state!");
     console.error(error);
 
     const nextResource = AudioQueue.dequeue(guildId);

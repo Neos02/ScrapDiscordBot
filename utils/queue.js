@@ -5,12 +5,13 @@ class AudioQueue {
   static queue = {};
   static players = {};
 
-  static enqueue = (guildId, resource) => {
+  static enqueue = (guildId, video) => {
     if (!this.queue[guildId]) {
-      this.queue[guildId] = [];
+      this.queue[guildId] = [video];
+      return;
     }
 
-    this.queue[guildId].push(resource);
+    this.queue[guildId].push(video);
   };
 
   static dequeue = (guildId) => {
@@ -25,6 +26,10 @@ class AudioQueue {
     if (this.queue[guildId]) {
       delete this.queue[guildId];
     }
+  };
+
+  static getQueue = (guildId) => {
+    return this.queue[guildId] ?? [];
   };
 
   static getPlayer = (guildId) => {

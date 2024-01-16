@@ -1,11 +1,11 @@
 const { AudioPlayerStatus } = require("@discordjs/voice");
-const { createPlayer } = require("../../utils/voice.js");
+const { createPlayer, getNextResource } = require("../../utils/voice.js");
 const AudioQueue = require("../../utils/queue.js");
 
 module.exports = {
   name: AudioPlayerStatus.Idle,
-  execute(guildId, prevState, state) {
-    const nextResource = AudioQueue.dequeue(guildId);
+  async execute(guildId, prevState, state) {
+    const nextResource = await getNextResource(guildId);
 
     if (nextResource && AudioQueue.isPlaying(guildId)) {
       const player = createPlayer(guildId);

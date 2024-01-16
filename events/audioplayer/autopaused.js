@@ -2,7 +2,5 @@ const { AudioPlayerStatus } = require("@discordjs/voice");
 
 module.exports = {
   name: AudioPlayerStatus.AutoPaused,
-  execute(guildId, prevState, state) {
-    console.log("Audio player is in the AutoPaused state!");
-  },
+  execute(guildId, prevState, state) {},
 };

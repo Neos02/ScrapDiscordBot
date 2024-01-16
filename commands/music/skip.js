@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { createPlayer } = require("../../utils/voice.js");
+const { createPlayer, getNextResource } = require("../../utils/voice.js");
 const AudioQueue = require("../../utils/queue.js");
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
     }
 
     const player = createPlayer(interaction.guild.id);
-    const nextResource = AudioQueue.dequeue(interaction.guild.id);
+    const nextResource = await getNextResource(interaction.guild.id);
 
     if (nextResource) {
       player.play(nextResource);
