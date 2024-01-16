@@ -3,7 +3,7 @@ const { createAudioResource } = require("@discordjs/voice");
 const { createVoiceConnection, createPlayer } = require("../../utils/voice.js");
 const AudioQueue = require("../../utils/queue.js");
 const { ytSearch } = require("../../utils/youtube.js");
-const ytdl = require("ytdl-core");
+const play = require("play-dl");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -34,13 +34,18 @@ module.exports = {
     await interaction.deferReply();
 
     ytSearch(song)
-      .then((result) => {
+      .then(async (result) => {
         const videoId = result.data.items[0].id.videoId;
         const title = result.data.items[0].snippet.title;
-        const stream = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
-          filter: "audioonly",
+        const source = await play.stream(
+          `https://www.youtube.com/watch?v=${videoId}`,
+          {
+            discordPlayerCompatibility: true,
+          }
+        );
+        const resource = createAudioResource(source.stream, {
+          inputType: source.type,
         });
-        const resource = createAudioResource(stream);
         let embed;
 
         if (AudioQueue.isPlaying(interaction.guild.id)) {
