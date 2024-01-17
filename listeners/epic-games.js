@@ -78,6 +78,6 @@ function getFreeGames(client) {
 module.exports = {
   run: (client) => {
     getFreeGames(client);
-    schedule.scheduleJob("0 12 * * *", () => getFreeGames(client));
+    schedule.scheduleJob("0 0,12 * * *", () => getFreeGames(client));
   },
 };
