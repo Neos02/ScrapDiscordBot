@@ -1,4 +1,4 @@
-const { AudioPlayerStatus } = require("@discordjs/voice");
+const { getVoiceConnection, AudioPlayerStatus } = require("@discordjs/voice");
 const { createPlayer, getNextResource } = require("../../utils/voice.js");
 const AudioQueue = require("../../utils/queue.js");
 
@@ -13,6 +13,13 @@ module.exports = {
       player.play(nextResource);
     } else {
       AudioQueue.setIsPlaying(guildId, false);
+
+      // After 1 minute of being Idle disconnect
+      setTimeout(() => {
+        getVoiceConnection(guildId).destroy();
+
+        AudioQueue.destroyPlayer(guildId);
+      }, 60 * 1000);
     }
   },
 };
