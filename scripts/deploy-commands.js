@@ -51,7 +51,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
     );
 
     // Deploy globally
-    // await rest.put(Routes.applicationCommands(clientId), { body: commands });
+    // await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commands });
 
     console.log(
       `Successfully reloaded ${data.length} application (/) commands.`
