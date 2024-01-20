@@ -1,5 +1,5 @@
 const { VoiceConnectionStatus } = require("@discordjs/voice");
-const AudioQueue = require("../../utils/queue.js");
+const AudioQueue = require("#utils/queue.js");
 
 module.exports = {
   name: VoiceConnectionStatus.Destroyed,

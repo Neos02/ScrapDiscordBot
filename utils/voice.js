@@ -1,7 +1,7 @@
 const { joinVoiceChannel, createAudioResource } = require("@discordjs/voice");
 const play = require("play-dl");
-const AudioQueue = require("../utils/queue.js");
-const { loadDirectoryScripts } = require("./file-loader.js");
+const AudioQueue = require("#utils/queue.js");
+const { loadDirectoryScripts } = require("#utils/file-loader.js");
 
 const YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 

@@ -1,11 +1,8 @@
 const { bold, time, EmbedBuilder } = require("discord.js");
-const {
-  FreeGames,
-  FreeGamesChannels,
-  FreeGamesRoles,
-} = require("../db-objects.js");
 const axios = require("axios");
 const schedule = require("node-schedule");
+const { FreeGames, FreeGamesChannels, FreeGamesRoles } = require("#db-objects");
+const logger = require("#logger");
 
 function getFreeGames(client) {
   axios
@@ -68,11 +65,15 @@ function getFreeGames(client) {
                 files: ["./assets/images/logos/epic-games.png"],
               });
             })
-            .catch(console.error);
+            .catch((e) => {
+              logger.error(e, "Error retrieving data");
+            });
         }
       }
     })
-    .catch(console.error);
+    .catch((e) => {
+      logger.error(e, "Error retrieving data");
+    });
 }
 
 module.exports = {

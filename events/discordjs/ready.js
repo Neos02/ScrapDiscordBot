@@ -1,6 +1,7 @@
 const { Events } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
+const logger = require("#logger");
 
 module.exports = {
   name: Events.ClientReady,
@@ -19,6 +20,6 @@ module.exports = {
       listener.run(client);
     }
 
-    console.log(`Ready! Logged in as ${client.user.tag}`);
+    logger.info(`Ready! Logged in as ${client.user.tag}`);
   },
 };

@@ -4,7 +4,7 @@ const {
   EmbedBuilder,
   PermissionFlagsBits,
 } = require("discord.js");
-const { Reactions } = require("../../db-objects.js");
+const { Reactions } = require("#db-objects");
 
 module.exports = {
   data: new SlashCommandBuilder()

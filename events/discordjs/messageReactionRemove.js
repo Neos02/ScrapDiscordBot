@@ -1,5 +1,6 @@
 const { Events } = require("discord.js");
-const { Reactions } = require("../../db-objects.js");
+const { Reactions } = require("#db-objects");
+const logger = require("#logger");
 
 module.exports = {
   name: Events.MessageReactionRemove,
@@ -8,7 +9,7 @@ module.exports = {
       try {
         await reaction.fetch();
       } catch (error) {
-        console.error("Something went wrong when fetching the message:", error);
+        logger.error(error, "Something went wrong when fetching the message");
         return;
       }
     }
@@ -31,6 +32,8 @@ module.exports = {
     );
     const member = await guild.members.cache.get(user.id);
 
-    member.roles.remove(data.role).catch(console.error);
+    member.roles.remove(data.role).catch((e) => {
+      logger.error(e, `Error removing role from member`);
+    });
   },
 };

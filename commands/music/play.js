@@ -3,9 +3,10 @@ const {
   createVoiceConnection,
   createPlayer,
   getNextResource,
-} = require("../../utils/voice.js");
-const AudioQueue = require("../../utils/queue.js");
-const { ytSearch } = require("../../utils/youtube.js");
+} = require("#utils/voice.js");
+const AudioQueue = require("#utils/queue.js");
+const { ytSearch } = require("#utils/youtube.js");
+const logger = require("#logger");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -68,7 +69,7 @@ module.exports = {
         interaction.editReply({ embeds: [embed] });
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e, "Error searching for song");
 
         interaction.editReply("An error has occurred");
       });

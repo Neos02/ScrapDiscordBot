@@ -3,7 +3,7 @@ const {
   EmbedBuilder,
   PermissionFlagsBits,
 } = require("discord.js");
-const { FreeGamesChannels, FreeGamesRoles } = require("../../db-objects.js");
+const { FreeGamesChannels, FreeGamesRoles } = require("#db-objects");
 
 module.exports = {
   data: new SlashCommandBuilder()

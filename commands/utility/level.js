@@ -1,6 +1,6 @@
 const { bold, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { UserXp } = require("../../db-objects.js");
-const { level, xp } = require("../../utils/leveling.js");
+const { UserXp } = require("#db-objects");
+const { level, xp } = require("#utils/leveling.js");
 
 module.exports = {
   data: new SlashCommandBuilder()

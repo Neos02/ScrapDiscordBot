@@ -14,7 +14,7 @@ module.exports = {
       const filePath = path.join(scriptPath, file);
       const object = require(filePath);
 
-      callback(object);
+      callback(object, filePath);
     }
   },
 };

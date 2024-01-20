@@ -1,5 +1,5 @@
 const { createAudioPlayer, NoSubscriberBehavior } = require("@discordjs/voice");
-const { loadDirectoryScripts } = require("./file-loader.js");
+const { loadDirectoryScripts } = require("#utils/file-loader.js");
 
 class AudioQueue {
   static queue = {};

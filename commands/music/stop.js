@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getVoiceConnection } = require("@discordjs/voice");
-const AudioQueue = require("../../utils/queue.js");
+const AudioQueue = require("#utils/queue.js");
 
 module.exports = {
   data: new SlashCommandBuilder()

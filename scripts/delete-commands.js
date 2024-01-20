@@ -1,4 +1,5 @@
 const { REST, Routes } = require("discord.js");
+const logger = require("#logger");
 
 require("dotenv").config();
 
@@ -14,10 +15,10 @@ rest
       "1057802095836790806"
     )
   )
-  .then(() => console.log("Successfully deleted guild command"))
-  .catch(console.error);
+  .then(() => logger.info("Successfully deleted guild command"))
+  .catch((e) => logger.error(e, "Error deleting guild command"));
 
 // for global commands
 // rest.delete(Routes.applicationCommand(clientId, ))
-// 	.then(() => console.log('Successfully deleted application command'))
-// 	.catch(console.error);
+// 	.then(() => logger.info('Successfully deleted application command'))
+// 	.catch((e) => logger.error(e, "Error deleting application command"));

@@ -3,7 +3,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { AutoRoles } = require("../../db-objects.js");
+const { AutoRoles } = require("#db-objects");
 
 module.exports = {
   data: new SlashCommandBuilder()

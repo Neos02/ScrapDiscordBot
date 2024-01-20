@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
-const { loadDirectoryScripts } = require("./utils/file-loader.js");
-const { slugToPascal } = require("./utils/text.js");
+const { loadDirectoryScripts } = require("#utils/file-loader.js");
+const { slugToPascal } = require("#utils/text.js");
 
 const sequelize = new Sequelize("database", "username", "password", {
   host: "localhost",

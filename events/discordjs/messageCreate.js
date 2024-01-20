@@ -6,8 +6,9 @@ const {
   CountingRoles,
   CountingUsers,
   Counts,
-} = require("../../db-objects.js");
-const { level } = require("../../utils/leveling.js");
+} = require("#db-objects");
+const { level } = require("#utils/leveling.js");
+const logger = require("#logger");
 
 const XP_PER_MESSAGE = 10;
 
@@ -38,19 +39,17 @@ async function levelingHandler(message) {
         const guild = await message.client.guilds.cache.get(message.guild.id);
         const member = await guild.members.cache.get(message.author.id);
 
-        member.roles.add(levelRole.role).catch(console.error);
+        member.roles.add(levelRole.role).catch((e) => {
+          logger.error(e, `Error adding role to member`);
+        });
 
-        message
-          .reply(
-            `You have leveled up to ${userLevelText} and earned the role ${roleMention(
-              levelRole.role
-            )}!`
-          )
-          .catch(console.error);
+        message.reply(
+          `You have leveled up to ${userLevelText} and earned the role ${roleMention(
+            levelRole.role
+          )}!`
+        );
       } else {
-        message
-          .reply(`You have leveled up to ${userLevelText}!`)
-          .catch(console.error);
+        message.reply(`You have leveled up to ${userLevelText}!`);
       }
     }
 
@@ -105,7 +104,9 @@ async function countingHandler(message) {
       const guild = await message.client.guilds.cache.get(message.guild.id);
       const member = await guild.members.cache.get(message.author.id);
 
-      member.roles.add(countingRole.role).catch(console.error);
+      member.roles.add(countingRole.role).catch((e) => {
+        logger.error(e, `Error adding role to member`);
+      });
 
       message.reply(
         `You have counted ${
@@ -117,7 +118,7 @@ async function countingHandler(message) {
     return true;
   }
 
-  message.delete().catch(console.error);
+  message.delete();
 
   return false;
 }

@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { LevelRoles } = require("../../db-objects.js");
+const { LevelRoles } = require("#db-objects");
 
 module.exports = {
   data: new SlashCommandBuilder()

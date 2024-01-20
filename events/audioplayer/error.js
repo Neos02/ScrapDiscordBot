@@ -1,10 +1,11 @@
-const { createPlayer } = require("../../utils/voice.js");
-const AudioQueue = require("../../utils/queue.js");
+const { createPlayer } = require("#utils/voice.js");
+const AudioQueue = require("#utils/queue.js");
+const logger = require("#logger");
 
 module.exports = {
   name: "error",
   execute(guildId, error) {
-    console.error(error);
+    logger.error(error, "An unexpected error has occurred");
 
     const nextResource = AudioQueue.dequeue(guildId);
 

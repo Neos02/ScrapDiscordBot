@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { capitalize } = require("../../utils/text.js");
+const { capitalize } = require("#utils/text.js");
 
 const choices = ["rock", "paper", "scissors"];
 
