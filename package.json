@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js | npx pino-pretty",
-    "deploy-cmds": "node scripts/deploy-commands.js | npx pino-pretty",
-    "delete-cmds": "node scripts/delete-commands.js | npx pino-pretty",
+    "start": "node index.js",
+    "deploy-cmds": "node scripts/deploy-commands.js",
+    "delete-cmds": "node scripts/delete-commands.js",
     "db-init": "node scripts/db-init.js -f"
   },
   "repository": {
