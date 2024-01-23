@@ -45,7 +45,7 @@ module.exports = {
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
     const role = interaction.options.getRole("role");
-    const botOnly = interaction.options.getBoolean("bot-only");
+    const botOnly = interaction.options.getBoolean("bot-only") ?? false;
     let embed;
 
     const autoRole = await AutoRoles.findOne({
