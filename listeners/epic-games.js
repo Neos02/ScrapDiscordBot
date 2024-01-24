@@ -10,14 +10,9 @@ function getFreeGames(client) {
       "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=US&allowCountries=US"
     )
     .then(async (res) => {
-      const now = new Date();
       const games = res.data.data.Catalog.searchStore.elements.filter(
-        (game) =>
-          game.expiryDate &&
-          now > new Date(game.effectiveDate) &&
-          now < new Date(game.expiryDate)
+        (game) => game.status === "ACTIVE"
       );
-
       const freeGamesChannels = await FreeGamesChannels.findAll();
 
       for (const game of games) {
@@ -39,9 +34,12 @@ function getFreeGames(client) {
             ? `${guild.roles.cache.get(freeGamesRole.role)}`
             : "";
 
+          console.log("getting channel");
+
           client.channels
             .fetch(freeGamesChannel.channel)
             .then((channel) => {
+              console.log(channel);
               const embed = new EmbedBuilder()
                 .setColor("Blurple")
                 .setTitle(game.title)
