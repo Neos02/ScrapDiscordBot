@@ -16,6 +16,10 @@ Scrap is a versatile Discord bot packed with features designed to enhance your s
 
 - Free Game Alerts: Stay informed about the latest free games, ensuring you never miss out on any deals
 
+### Music
+
+- Listen to music with your friends in any voice channel!
+
 ### Fun
 
 - rps command: Challenge Scrap to a game of Rock, Paper, Scissors
@@ -99,10 +103,6 @@ Add a reaction to a message for users to be granted a role with.
 - `emoji`: The emoji to use for the reaction: This must be from a server the bot is in.
 - `role`: The role to grant the user upon using the reaction.
 
-### `/reaction-roles create [<message>]`
-
-Create a message using the bot for reaction roles to be applied to. It is not required to use this as any message can be used.
-
 - `message`: The message for the bot to send. If not provided the bot defaults to "React here to get your roles!"
 
 ### `/reaction-roles remove <message-id> <emoji>`
@@ -127,22 +127,38 @@ Get a user's level.
 
 - `user`: The user to view. If no user is provided, view your level.
 
-### `/info server`
+### `/pause`
 
-Get information about the server.
-
-### `/info user [<user>]`
-
-Get information about a user. If no user is provided, get information about yourself.
-
-- `user`: The user to get information about.
+Pauses the current song.
 
 ### `/ping`
 
 Replies with pong!
+
+### `/play <song>`
+
+Plays a song in the current voice channel or adds the song to a queue if another song is currently playing.
+
+- `song`: The song to play
+
+### `/queue`
+
+Displays the current music queue. Can only display the first 25 songs in the queue.
 
 ### `/rps <choice>`
 
 Play a game of Rock, Paper, Scissors with Scrap.
 
 - `choice`: Your choice of rock, paper, or scissors, to play the game with.
+
+### `/skip`
+
+Skips the currently playing song.
+
+### `/stop`
+
+Stops the music and makes the bot leave the voice channel.
+
+### `/unpause`
+
+Resumes the current song.
