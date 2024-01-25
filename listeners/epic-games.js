@@ -1,4 +1,4 @@
-const { bold, time, EmbedBuilder } = require("discord.js");
+const { bold, time, EmbedBuilder, RESTJSONErrorCodes } = require("discord.js");
 const axios = require("axios");
 const schedule = require("node-schedule");
 const { FreeGames, FreeGamesChannels, FreeGamesRoles } = require("#db-objects");
@@ -37,7 +37,6 @@ function getFreeGames(client) {
           client.channels
             .fetch(freeGamesChannel.channel)
             .then((channel) => {
-              console.log(channel);
               const embed = new EmbedBuilder()
                 .setColor("Blurple")
                 .setTitle(game.title)
@@ -62,6 +61,13 @@ function getFreeGames(client) {
               });
             })
             .catch((e) => {
+              if (e.code === RESTJSONErrorCodes.UnknownChannel) {
+                // Delete the channel from the database
+                FreeGamesChannels.destroy({
+                  where: { guild: freeGamesChannel.guild },
+                });
+              }
+
               logger.error(e, "Error retrieving data");
             });
         }
