@@ -12,16 +12,6 @@ module.exports = {
     .setDescription("Manage reaction roles")
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("create")
-        .setDescription("Creates a message for the reaction roles")
-        .addStringOption((option) =>
-          option
-            .setName("message")
-            .setDescription("Sets the message to be displayed")
-        )
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
         .setName("add")
         .setDescription("Add a reaction role to a message")
         .addStringOption((option) =>
