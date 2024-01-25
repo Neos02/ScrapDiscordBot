@@ -34,8 +34,6 @@ function getFreeGames(client) {
             ? `${guild.roles.cache.get(freeGamesRole.role)}`
             : "";
 
-          console.log("getting channel");
-
           client.channels
             .fetch(freeGamesChannel.channel)
             .then((channel) => {
@@ -45,9 +43,9 @@ function getFreeGames(client) {
                 .setTitle(game.title)
                 .addFields({
                   name: " ",
-                  value: `${bold("Free")} until ${time(
-                    new Date(game.expiryDate)
-                  )}`,
+                  value: game.expiryDate
+                    ? `${bold("Free")} until ${time(new Date(game.expiryDate))}`
+                    : " ",
                 })
                 .setThumbnail("attachment://epic-games.png")
                 .setImage(game.keyImages[0].url)
