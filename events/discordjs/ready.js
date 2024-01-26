@@ -7,6 +7,8 @@ module.exports = {
   name: Events.ClientReady,
   once: true,
   execute(client) {
+    logger.info(`Ready! Logged in as ${client.user.tag}`);
+
     // Get listeners
     const listenersPath = path.join(__dirname, "..", "..", "listeners");
     const listenerFiles = fs
@@ -19,7 +21,5 @@ module.exports = {
 
       listener.run(client);
     }
-
-    logger.info(`Ready! Logged in as ${client.user.tag}`);
   },
 };
