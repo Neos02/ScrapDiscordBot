@@ -5,6 +5,8 @@ const { FreeGames, FreeGamesChannels, FreeGamesRoles } = require("#db-objects");
 const logger = require("#logger");
 
 function getFreeGames(client) {
+  logger.info("Retrieving free games");
+
   axios
     .get(
       "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=US&allowCountries=US"
