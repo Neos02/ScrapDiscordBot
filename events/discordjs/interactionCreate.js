@@ -47,7 +47,7 @@ module.exports = {
       await command.execute(interaction);
     } catch (error) {
       logger.error(
-        "error",
+        error,
         `An error occurred while executing the command ${command.data.name}`
       );
 

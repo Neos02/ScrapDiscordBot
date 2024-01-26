@@ -16,6 +16,10 @@ function getFreeGames(client) {
       const freeGamesChannels = await FreeGamesChannels.findAll();
 
       for (const game of games) {
+        const pageSlug = game.offerMappings.filter(
+          (page) => page.pageType === "productHome"
+        )[0].pageSlug;
+
         for (const freeGamesChannel of freeGamesChannels) {
           const freeGame = await FreeGames.findOne({
             where: { guild: freeGamesChannel.guild, game: game.id },
@@ -49,7 +53,9 @@ function getFreeGames(client) {
                 .setThumbnail("attachment://epic-games.png")
                 .setImage(game.keyImages[0].url)
                 .setURL(
-                  `https://store.epicgames.com/en-US/p/${game.productSlug}`
+                  pageSlug
+                    ? `https://store.epicgames.com/en-US/p/${pageSlug}`
+                    : null
                 );
 
               FreeGames.create({ guild: guild.id, game: game.id });
