@@ -113,6 +113,28 @@ Remove a reaction from from a message.
 
 - `emoji`: The emoji of the reaction to remove.
 
+### `/twitch add <username>`
+
+Add stream alerts for a Twitch channel
+
+- `username`: The username of the Twitch channel to add alerts for
+
+### `/twitch clear-channel`
+
+Remove the stream alerts channel
+
+### `/twitch remove <username>`
+
+Remove stream alerts for a Twitch channel
+
+- `username`: The username of the Twitch channel to remove alerts for
+
+### `/twitch set-channel <channel>`
+
+Set the stream alerts channel
+
+- `channel`: The channel to set for stream alerts
+
 ## Member Commands
 
 ### `/count [<user>]`
