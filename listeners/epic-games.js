@@ -7,20 +7,26 @@ const logger = require("#logger");
 function getFreeGames(client) {
   logger.info("Retrieving free games");
 
+  const now = new Date();
+
   axios
     .get(
       "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=US&allowCountries=US"
     )
     .then(async (res) => {
       const games = res.data.data.Catalog.searchStore.elements.filter(
-        (game) => game.status === "ACTIVE"
+        (game) => now >= new Date(game.effectiveDate)
       );
+
+      console.log(games);
+
       const freeGamesChannels = await FreeGamesChannels.findAll();
 
       for (const game of games) {
-        const pageSlug = game.offerMappings.filter(
-          (page) => page.pageType === "productHome"
-        )[0].pageSlug;
+        const pageSlug =
+          game.offerMappings.filter(
+            (page) => page.pageType === "productHome"
+          )[0]?.pageSlug ?? game.urlSlug;
 
         for (const freeGamesChannel of freeGamesChannels) {
           const freeGame = await FreeGames.findOne({
