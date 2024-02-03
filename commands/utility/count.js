@@ -24,6 +24,6 @@ module.exports = {
         `${user.username} has counted ${countingUser.numCounts} times`
       );
 
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
+    return await interaction.reply({ embeds: [embed] });
   },
 };

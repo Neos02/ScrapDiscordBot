@@ -34,9 +34,9 @@ module.exports = {
           `${xp(lvl + 1) - userXp.xp} XP away from ${nextLvlText}`
         );
 
-      return await interaction.reply({ embeds: [embed], ephemeral: true });
+      return await interaction.reply({ embeds: [embed] });
     }
 
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
+    return await interaction.reply({ embeds: [embed] });
   },
 };
