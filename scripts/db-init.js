@@ -13,10 +13,8 @@ loadDirectoryScripts("models", (model) => {
   model(sequelize, Sequelize.DataTypes);
 });
 
-const force = process.argv.includes("--force") || process.argv.includes("-f");
-
 sequelize
-  .sync({ force })
+  .sync()
   .then(async () => {
     logger.info("Database synced");
 

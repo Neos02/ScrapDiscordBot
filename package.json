@@ -8,7 +8,7 @@
     "start": "node index.js",
     "deploy-cmds": "node scripts/deploy-commands.js",
     "delete-cmds": "node scripts/delete-commands.js",
-    "db-init": "node scripts/db-init.js -f"
+    "db-init": "node scripts/db-init.js"
   },
   "repository": {
     "type": "git",
