@@ -18,8 +18,6 @@ function getFreeGames(client) {
         (game) => now >= new Date(game.effectiveDate)
       );
 
-      console.log(games);
-
       const freeGamesChannels = await FreeGamesChannels.findAll();
 
       for (const game of games) {
