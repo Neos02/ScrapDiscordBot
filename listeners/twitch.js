@@ -97,6 +97,6 @@ async function getTwitchStreams(client) {
 module.exports = {
   run: (client) => {
     getTwitchStreams(client);
-    schedule.scheduleJob("/10 * * * *", () => getTwitchStreams(client));
+    schedule.scheduleJob("*/10 * * * *", () => getTwitchStreams(client));
   },
 };
