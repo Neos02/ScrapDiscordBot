@@ -48,44 +48,59 @@ async function getTwitchStreams(client) {
           return status >= 200;
         },
       })
-      .then((res) => {
-        for (const stream of res.data.data) {
-          const embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setAuthor({ name: `${stream.user_name} is now live on Twitch!` })
-            .setTitle(stream.title)
-            .setURL(`https://twitch.tv/${stream.user_login}`)
-            .addFields(
-              { name: "Game", value: stream["game_name"], inline: true },
-              {
-                name: "Viewers",
-                value: `${stream["viewer_count"]}`,
-                inline: true,
-              }
-            )
-            .setImage(
-              stream.thumbnail_url
-                .replace("{width}", "1920")
-                .replace("{height}", "1080")
-            );
+      .then(async (res) => {
+        for (const account of accounts[guild]) {
+          const stream = res.data.data.find(
+            (stream) => account.username === stream.user_login
+          );
 
-          client.channels
-            .fetch(alertsChannel.channel)
-            .then((channel) => {
-              channel.send({
-                embeds: [embed],
-              });
-            })
-            .catch((e) => {
-              if (e.code === RESTJSONErrorCodes.UnknownChannel) {
-                // Delete the channel from the database
-                StreamAlertChannels.destroy({
-                  where: { guild: alertsChannel.guild },
+          if (!account.isLive && stream) {
+            // If the account was not already live and a stream exists
+            // set it to live and send an alert
+            account.isLive = true;
+            await account.save();
+
+            const embed = new EmbedBuilder()
+              .setColor("Blurple")
+              .setAuthor({ name: `${stream.user_name} is now live on Twitch!` })
+              .setTitle(stream.title)
+              .setURL(`https://twitch.tv/${stream.user_login}`)
+              .addFields(
+                { name: "Game", value: stream["game_name"], inline: true },
+                {
+                  name: "Viewers",
+                  value: `${stream["viewer_count"]}`,
+                  inline: true,
+                }
+              )
+              .setImage(
+                stream.thumbnail_url
+                  .replace("{width}", "1920")
+                  .replace("{height}", "1080")
+              );
+
+            client.channels
+              .fetch(alertsChannel.channel)
+              .then((channel) => {
+                channel.send({
+                  embeds: [embed],
                 });
-              }
+              })
+              .catch((e) => {
+                if (e.code === RESTJSONErrorCodes.UnknownChannel) {
+                  // Delete the channel from the database
+                  StreamAlertChannels.destroy({
+                    where: { guild: alertsChannel.guild },
+                  });
+                }
 
-              logger.error(e, "Error retrieving data");
-            });
+                logger.error(e, "Error retrieving data");
+              });
+          } else if (account.isLive && !stream) {
+            // Otherwise the account is not live and we should store that
+            account.isLive = false;
+            await account.save();
+          }
         }
       })
       .catch((e) => {
