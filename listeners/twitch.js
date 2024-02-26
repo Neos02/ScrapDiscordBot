@@ -60,19 +60,30 @@ async function getTwitchStreams(client) {
             account.isLive = true;
             await account.save();
 
+            const gameName = stream["game_name"];
+
+            const fields = [];
+
+            if (gameName.length) {
+              fields.push({
+                name: "Game",
+                value: gameName.length ? gameName : "",
+                inline: true,
+              });
+            }
+
+            fields.push({
+              name: "Viewers",
+              value: `${stream["viewer_count"]}`,
+              inline: true,
+            });
+
             const embed = new EmbedBuilder()
               .setColor("Blurple")
               .setAuthor({ name: `${stream.user_name} is now live on Twitch!` })
               .setTitle(stream.title)
               .setURL(`https://twitch.tv/${stream.user_login}`)
-              .addFields(
-                { name: "Game", value: stream["game_name"], inline: true },
-                {
-                  name: "Viewers",
-                  value: `${stream["viewer_count"]}`,
-                  inline: true,
-                }
-              )
+              .addFields(...fields)
               .setImage(
                 stream.thumbnail_url
                   .replace("{width}", "1920")
