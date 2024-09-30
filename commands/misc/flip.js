@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, bold } = require("discord.js");
+const { SlashCommandBuilder, inlineCode } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -6,7 +6,7 @@ module.exports = {
     .setDescription("Flip a coin!"),
   async execute(interaction) {
     await interaction.reply({
-      content: `The coin landed on ${bold(
+      content: `The coin landed on ${inlineCode(
         Math.random() > 0.5 ? "heads" : "tails"
       )}!`,
     });
