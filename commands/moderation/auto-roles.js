@@ -10,10 +10,7 @@ const {
   ButtonStyles,
 } = require("@devraelfreeze/discordjs-pagination");
 const { AutoRoles } = require("#db-objects");
-const {
-  getRoleDetails,
-  deleteRoleIfNotExists,
-} = require("#root/utils/roles.js");
+const { deleteRoleIfNotExists } = require("#root/utils/roles.js");
 
 module.exports = {
   data: new SlashCommandBuilder()

@@ -22,7 +22,7 @@ function getFreeGames(client) {
 
       for (const game of games) {
         const pageSlug =
-          game.offerMappings.filter(
+          game.offerMappings?.filter(
             (page) => page.pageType === "productHome"
           )[0]?.pageSlug ?? game.urlSlug;
 

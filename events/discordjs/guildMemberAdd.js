@@ -1,6 +1,7 @@
 const { Events } = require("discord.js");
 const { AutoRoles } = require("#db-objects");
 const logger = require("#logger");
+const { deleteRoleIfNotExists } = require("#root/utils/roles.js");
 
 module.exports = {
   name: Events.GuildMemberAdd,
