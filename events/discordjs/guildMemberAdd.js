@@ -10,6 +10,8 @@ module.exports = {
     });
 
     for (const role of autoRoles) {
+      deleteRoleIfNotExists(member.guild, role.role);
+
       member.roles.add(role.role).catch((e) => {
         logger.error(e, "Error adding role to member");
       });
