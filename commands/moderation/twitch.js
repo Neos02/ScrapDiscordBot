@@ -3,7 +3,6 @@ const {
   SlashCommandBuilder,
   EmbedBuilder,
   PermissionFlagsBits,
-  inlineCode,
 } = require("discord.js");
 const { TwitchAccounts, StreamAlertChannels } = require("#db-objects");
 const {

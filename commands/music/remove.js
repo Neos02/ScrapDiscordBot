@@ -1,15 +1,5 @@
-const {
-  bold,
-  SlashCommandBuilder,
-  EmbedBuilder,
-  inlineCode,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, inlineCode } = require("discord.js");
 const AudioQueue = require("#utils/queue.js");
-const {
-  pagination,
-  ButtonTypes,
-  ButtonStyles,
-} = require("@devraelfreeze/discordjs-pagination");
 
 module.exports = {
   data: new SlashCommandBuilder()
