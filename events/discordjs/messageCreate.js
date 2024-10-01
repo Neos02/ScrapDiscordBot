@@ -72,12 +72,7 @@ async function countingHandler(message) {
 
   if (!countingChannel) return true;
 
-  const count =
-    (await Counts.findOne({ where: { guild: message.guildId } })) ??
-    (await Counts.create({
-      guild: message.guildId,
-      currentNumber: 0,
-    }));
+  const count = await Counts.findOne({ where: { guild: message.guildId } });
 
   if (+message.content - 1 === count.currentNumber) {
     count.currentNumber += 1;

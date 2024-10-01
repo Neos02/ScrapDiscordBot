@@ -99,6 +99,11 @@ async function setChannel(interaction) {
       guild: interaction.guild.id,
       channel: channel.id,
     });
+
+    await Counts.create({
+      guild: interaction.guild.id,
+      currentNumber: 0,
+    });
   }
 
   return await interaction.reply({
