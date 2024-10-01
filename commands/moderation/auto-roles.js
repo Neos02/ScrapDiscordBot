@@ -12,6 +12,7 @@ const {
 const { AutoRoles } = require("#db-objects");
 const { deleteRoleIfNotExists } = require("#root/utils/roles.js");
 const { Sequelize } = require("sequelize");
+const logger = require("#logger");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -91,11 +92,13 @@ module.exports = {
 
       await guild.members.fetch();
       guild.members.cache.forEach((member) => {
-        member.roles.add(
-          autoRoles
-            .filter((role) => role.botOnly === member.user.bot)
-            .map((role) => role.role)
-        );
+        member.roles
+          .add(
+            autoRoles
+              .filter((role) => role.botOnly === member.user.bot)
+              .map((role) => role.role)
+          )
+          .catch((e) => logger.error(e));
       });
     }
   },
