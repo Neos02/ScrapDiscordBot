@@ -3,8 +3,15 @@ const {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
+  roleMention,
 } = require("discord.js");
 const { LevelRoles } = require("#db-objects");
+const { deleteRoleIfNotExists } = require("#root/utils/roles.js");
+const {
+  pagination,
+  ButtonTypes,
+  ButtonStyles,
+} = require("@devraelfreeze/discordjs-pagination");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -40,6 +47,11 @@ module.exports = {
             .setRequired(true)
         )
     )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("list")
+        .setDescription("List the active role rewards for leveling")
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
@@ -49,6 +61,8 @@ module.exports = {
         return await addRoleReward(interaction);
       case "remove-role-reward":
         return await removeRoleReward(interaction);
+      case "list":
+        return await list(interaction);
     }
   },
 };
@@ -99,4 +113,60 @@ async function removeRoleReward(interaction) {
   }
 
   return await interaction.reply({ embeds: [embed], ephemeral: true });
+}
+
+async function list(interaction) {
+  const levelRoles = (
+    await LevelRoles.findAll({
+      where: { guild: interaction.guild.id },
+    })
+  ).filter((role) => !deleteRoleIfNotExists(interaction.guild, role.role));
+  const embeds = [];
+
+  // Create pages with 10 roles per page
+  while (levelRoles.length) {
+    const page = levelRoles.splice(0, 10);
+
+    embeds.push(
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setTitle("Active Level Roles")
+        .addFields(
+          page.map((role) => ({
+            name: `Level ${role.level}`,
+            value: roleMention(role.role),
+          }))
+        )
+    );
+  }
+
+  if (!embeds.length) {
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("Blurple")
+          .setTitle(`Active Level Roles`)
+          .setDescription(`There are currently no active level roles.`),
+      ],
+      ephemeral: true,
+    });
+  }
+
+  return await pagination({
+    embeds,
+    author: interaction.member.user,
+    interaction,
+    ephemeral: true,
+    time: 40 * 1000,
+    buttons: [
+      {
+        type: ButtonTypes.previous,
+        style: ButtonStyles.Primary,
+      },
+      {
+        type: ButtonTypes.next,
+        style: ButtonStyles.Primary,
+      },
+    ],
+  });
 }
