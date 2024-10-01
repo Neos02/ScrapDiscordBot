@@ -50,94 +50,115 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    let embed;
-    let twitchAccount;
-    let alertsChannel;
     const subcommand = interaction.options.getSubcommand();
-    const username = interaction.options.getString("username");
-    const channel = interaction.options.getChannel("channel");
-
-    if (username) {
-      twitchAccount = await TwitchAccounts.findOne({
-        where: { guild: interaction.guild.id, username },
-      });
-    }
-
-    if (channel) {
-      alertsChannel = await StreamAlertChannels.findOne({
-        where: { guild: interaction.guild.id },
-      });
-    }
 
     switch (subcommand) {
       case "add":
-        const accountsInGuild = await TwitchAccounts.count({
-          where: { guild: interaction.guild.id },
-        });
-
-        if (accountsInGuild >= 100) {
-          return await interaction.reply({
-            content: "Only 100 accounts can send stream alerts.",
-            ephemeral: true,
-          });
-        }
-
-        if (!twitchAccount) {
-          await TwitchAccounts.create({
-            guild: interaction.guild.id,
-            username,
-            isLive: false,
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Added alerts for ${bold(username)}!`);
-
-        break;
+        return await add(interaction);
       case "remove":
-        if (twitchAccount) {
-          await TwitchAccounts.destroy({
-            where: { guild: interaction.guild.id, username },
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Removed alerts for ${bold(username)}!`);
-
-        break;
+        return await remove(interaction);
       case "set-channel":
-        if (alertsChannel) {
-          alertsChannel.channel = channel.id;
-
-          await alertsChannel.save();
-        } else {
-          await StreamAlertChannels.create({
-            guild: interaction.guild.id,
-            channel: channel.id,
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Set stream alerts channel to ${channel.url}`);
-
-        break;
+        return await setChannel(interaction);
       case "clear-channel":
-        if (alertsChannel) {
-          await StreamAlertChannels.destroy({
-            where: { guild: interaction.guild.id },
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Cleared the stream alerts channel`);
-
-        break;
+        return await clearChannel(interaction);
     }
-
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
   },
 };
+
+async function add(interaction) {
+  const username = interaction.options.getString("username");
+  const accountsInGuild = await TwitchAccounts.count({
+    where: { guild: interaction.guild.id },
+  });
+  const embed = new EmbedBuilder().setColor("Blurple");
+
+  if (accountsInGuild >= 100) {
+    embed.setDescription("Only 100 accounts can send stream alerts.");
+  } else {
+    const twitchAccount = await TwitchAccounts.findOne({
+      where: { guild: interaction.guild.id, username },
+    });
+
+    if (!twitchAccount) {
+      await TwitchAccounts.create({
+        guild: interaction.guild.id,
+        username,
+        isLive: false,
+      });
+    }
+
+    embed.setDescription(`Added alerts for ${bold(username)}!`);
+  }
+
+  return await interaction.reply({ embeds: [embed], ephemeral: true });
+}
+
+async function remove(interaction) {
+  const username = interaction.options.getString("username");
+  const twitchAccount = await TwitchAccounts.findOne({
+    where: { guild: interaction.guild.id, username },
+  });
+
+  if (twitchAccount) {
+    await TwitchAccounts.destroy({
+      where: { guild: interaction.guild.id, username },
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Removed alerts for ${bold(username)}!`),
+    ],
+    ephemeral: true,
+  });
+}
+
+async function setChannel(interaction) {
+  const channel = interaction.options.getChannel("channel");
+  const alertsChannel = await StreamAlertChannels.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (alertsChannel) {
+    alertsChannel.channel = channel.id;
+
+    await alertsChannel.save();
+  } else {
+    await StreamAlertChannels.create({
+      guild: interaction.guild.id,
+      channel: channel.id,
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Set stream alerts channel to ${channel.url}`),
+    ],
+    ephemeral: true,
+  });
+}
+
+async function clearChannel(interaction) {
+  const alertsChannel = await StreamAlertChannels.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (alertsChannel) {
+    await StreamAlertChannels.destroy({
+      where: { guild: interaction.guild.id },
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Cleared the stream alerts channel`),
+    ],
+    ephemeral: true,
+  });
+}
