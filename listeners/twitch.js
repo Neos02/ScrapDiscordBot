@@ -10,6 +10,17 @@ async function getTwitchStreams(client) {
   logger.info("Retrieving Twitch streams");
 
   const twitchAccounts = await TwitchAccounts.findAll();
+  const accessToken = await axios.post("https://id.twitch.tv/oauth2/token", {
+    client_id: process.env.TWITCH_CLIENT_ID,
+    client_secret: process.env.TWITCH_CLIENT_SECRET,
+    grant_type: "client_credentials",
+  });
+
+  if (!accessToken) {
+    logger.error("Could not get twitch access token");
+    return;
+  }
+
   const accounts = {};
   const guilds = [];
 
@@ -40,7 +51,7 @@ async function getTwitchStreams(client) {
     axios
       .get(`/helix/streams?type=live&${queryString}`, {
         headers: {
-          Authorization: `Bearer ${process.env.TWITCH_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${accessToken.data.access_token}`,
           "Client-Id": process.env.TWITCH_CLIENT_ID,
         },
         baseURL: TWITCH_BASE_URL,
