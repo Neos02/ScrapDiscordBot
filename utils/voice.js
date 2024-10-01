@@ -1,5 +1,5 @@
 const { joinVoiceChannel, createAudioResource } = require("@discordjs/voice");
-const play = require("play-dl");
+const ytdl = require("@distube/ytdl-core");
 const AudioQueue = require("#utils/queue.js");
 const { loadDirectoryScripts } = require("#utils/file-loader.js");
 
@@ -26,12 +26,10 @@ async function getNextResource(guildId) {
     return null;
   }
 
-  const source = await play.stream(`${YOUTUBE_BASE_URL}${nextVideo.id}`, {
-    discordPlayerCompatibility: true,
+  const stream = ytdl(`${YOUTUBE_BASE_URL}${nextVideo.id}`, {
+    filter: "audioonly",
   });
-  const resource = createAudioResource(source.stream, {
-    inputType: source.type,
-  });
+  const resource = createAudioResource(stream);
 
   return resource;
 }
