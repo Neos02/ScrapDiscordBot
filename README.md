@@ -39,6 +39,12 @@ Configuration command for the auto roles system. Automatically grant roles to us
 - `role`: The role to add/remove from auto roles.
 - `bot-only`: Whether the role should only apply to bots. Auto roles are only applied to users by default.
 
+### `/auto-roles list [<bot-only>]`
+
+Displays the roles that will be given to new users of a type. Defaults to regular users.
+
+- `bot-only`: If true, shows the roles that will be given to new bots.
+
 ### `/counting add-role-reward <role> <num-counts>`
 
 Add a role reward to grant users upon counting a certain number of times.
@@ -61,6 +67,12 @@ Remove a role reward from the counting system.
 Sets the channel to use for counting.
 
 - `channel`: The channel to use for counting.
+
+### `/counting set-count <count>`
+
+Sets the count for the server.
+
+- `count`: The new value for the count
 
 ### `/epic-free-games clear-channel`
 
@@ -89,11 +101,19 @@ Add a role reward to grant users upon reaching a certain level.
 - `role`: The role to reward.
 - `level`: The level to grant the role at.
 
+### `/leveling list`
+
+View the current role rewards and the level that they will be given at.
+
 ### `/leveling remove-role-reward <role>`
 
 Remove a role reward from the leveling system.
 
 - `role`: The role to remove.
+
+### `/reaction-roles create`
+
+Sends "React here to get your roles!" as a default message for users to react to.
 
 ### `/reaction-roles add <message-id> <emoji> <role>`
 
@@ -123,6 +143,10 @@ Add stream alerts for a Twitch channel
 
 Remove the stream alerts channel
 
+### `/twitch list`
+
+Lists the twitch usernames that are being watched for stream alerts.
+
 ### `/twitch remove <username>`
 
 Remove stream alerts for a Twitch channel
@@ -142,6 +166,10 @@ Set the stream alerts channel
 Get the number of times a user has counted.
 
 - `user`: The user to get the number of counts of. If no user is provided, see how many times you have counted.
+
+### `/flip`
+
+Flips a coin
 
 ### `/level [<user>]`
 
@@ -167,6 +195,12 @@ Plays a song in the current voice channel or adds the song to a queue if another
 
 Displays the current music queue. Can only display the first 25 songs in the queue.
 
+### `/remove <position>`
+
+Removes the song at the specified position in the queue.
+
+- `position`: The position of the song to remove.
+
 ### `/rps <choice>`
 
 Play a game of Rock, Paper, Scissors with Scrap.
@@ -176,6 +210,12 @@ Play a game of Rock, Paper, Scissors with Scrap.
 ### `/skip`
 
 Skips the currently playing song.
+
+### `/spin <options>`
+
+Spins a wheel to select a random value from the provided options.
+
+- `options`: A comma separated list of options
 
 ### `/stop`
 
