@@ -11,6 +11,7 @@ const {
 } = require("@devraelfreeze/discordjs-pagination");
 const { AutoRoles } = require("#db-objects");
 const { deleteRoleIfNotExists } = require("#root/utils/roles.js");
+const { Sequelize } = require("sequelize");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -71,6 +72,30 @@ module.exports = {
         return await removeRole(interaction);
       case "list":
         return await list(interaction);
+    }
+  },
+  async startup(client) {
+    const guildIds = (
+      await AutoRoles.findAll({
+        attributes: [
+          [Sequelize.fn("DISTINCT", Sequelize.col("guild")), "guild"],
+        ],
+      })
+    ).map((guild) => guild.guild);
+
+    for (const guildId of guildIds) {
+      const autoRoles = await AutoRoles.findAll({
+        where: { guild: guildId },
+      });
+      const guild = await client.guilds.cache.get(guildId);
+
+      guild.members.cache.forEach((member) => {
+        member.roles.add(
+          autoRoles
+            .filter((role) => role.botOnly === member.user.bot)
+            .map((role) => role.role)
+        );
+      });
     }
   },
 };
@@ -147,7 +172,7 @@ async function list(interaction) {
         .addFields(
           page.map((role) => ({
             name: " ",
-            value: roleMention(role.id),
+            value: roleMention(role.role),
           }))
         )
     );
