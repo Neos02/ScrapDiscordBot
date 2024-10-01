@@ -3,8 +3,14 @@ const {
   SlashCommandBuilder,
   EmbedBuilder,
   PermissionFlagsBits,
+  inlineCode,
 } = require("discord.js");
 const { TwitchAccounts, StreamAlertChannels } = require("#db-objects");
+const {
+  pagination,
+  ButtonTypes,
+  ButtonStyles,
+} = require("@devraelfreeze/discordjs-pagination");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -34,6 +40,11 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("list")
+        .setDescription("List the channels that have stream alerts turned on")
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("set-channel")
         .setDescription("Sets the stream announcement channel")
         .addChannelOption((option) =>
@@ -57,6 +68,8 @@ module.exports = {
         return await add(interaction);
       case "remove":
         return await remove(interaction);
+      case "list":
+        return await list(interaction);
       case "set-channel":
         return await setChannel(interaction);
       case "clear-channel":
@@ -112,6 +125,62 @@ async function remove(interaction) {
         .setDescription(`Removed alerts for ${bold(username)}!`),
     ],
     ephemeral: true,
+  });
+}
+
+async function list(interaction) {
+  const accounts = await TwitchAccounts.findAll({
+    where: { guild: interaction.guild.id },
+  });
+  const embeds = [];
+
+  // Create pages with 10 roles per page
+  while (accounts.length) {
+    const page = accounts.splice(0, 10);
+
+    embeds.push(
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setTitle(`Stream Alerts`)
+        .addFields(
+          page.map((account, i) => ({
+            name: " ",
+            value: `${bold(`${i + 1}.`)} ${account.username}`,
+          }))
+        )
+    );
+  }
+
+  if (!embeds.length) {
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("Blurple")
+          .setTitle(`Stream Alerts`)
+          .setDescription(
+            `There are currently no accounts with stream alerts turned on`
+          ),
+      ],
+      ephemeral: true,
+    });
+  }
+
+  return await pagination({
+    embeds,
+    author: interaction.member.user,
+    interaction,
+    ephemeral: true,
+    time: 40 * 1000,
+    buttons: [
+      {
+        type: ButtonTypes.previous,
+        style: ButtonStyles.Primary,
+      },
+      {
+        type: ButtonTypes.next,
+        style: ButtonStyles.Primary,
+      },
+    ],
   });
 }
 

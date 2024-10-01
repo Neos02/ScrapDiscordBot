@@ -41,11 +41,11 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 // Deploy commands
 (async () => {
   try {
-    logger.info(
-      `Started refreshing ${commands.length} application (/) commands globally.`
-    );
-
     if (deployGlobal) {
+      logger.info(
+        `Started refreshing ${commands.length} application (/) commands globally.`
+      );
+
       const data = await rest.put(
         Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
         { body: commands }
@@ -55,6 +55,10 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
         `Successfully reloaded ${data.length} application (/) commands globally.`
       );
     } else {
+      logger.info(
+        `Started refreshing ${commands.length} application (/) commands.`
+      );
+
       // The put method is used to fully refresh all commands in the guild with the current set
       const data = await rest.put(
         Routes.applicationGuildCommands(
