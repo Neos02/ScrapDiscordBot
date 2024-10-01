@@ -71,15 +71,15 @@ module.exports = {
 
     switch (subcommand) {
       case "set-channel":
-        return setChannel(interaction);
+        return await setChannel(interaction);
       case "clear-channel":
-        return clearChannel(interaction);
+        return await clearChannel(interaction);
       case "set-count":
-        return setCount(interaction);
+        return await setCount(interaction);
       case "add-role-reward":
-        return addRoleReward(interaction);
+        return await ddRoleReward(interaction);
       case "remove-role-reward":
-        return removeRoleReward(interaction);
+        return await removeRoleReward(interaction);
     }
   },
 };

@@ -46,81 +46,117 @@ module.exports = {
     let embed;
     const subcommand = interaction.options.getSubcommand();
 
-    const freeGamesChannel = await FreeGamesChannels.findOne({
-      where: { guild: interaction.guild.id },
-    });
-
     const freeGamesRole = await FreeGamesRoles.findOne({
       where: { guild: interaction.guild.id },
     });
 
     switch (subcommand) {
       case "set-channel":
-        const channel = interaction.options.getChannel("channel");
-
-        if (freeGamesChannel) {
-          freeGamesChannel.channel = channel.id;
-
-          await freeGamesChannel.save();
-        } else {
-          await FreeGamesChannels.create({
-            guild: interaction.guild.id,
-            channel: channel.id,
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Set free Epic Games channel to ${channel.url}`);
-
-        break;
+        return await setChannel(interaction);
       case "clear-channel":
-        if (freeGamesChannel) {
-          await FreeGamesChannels.destroy({
-            where: { guild: interaction.guild.id },
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Cleared the free Epic Games channel`);
-
-        break;
-
+        return await clearChannel(interaction);
       case "set-role":
-        const role = interaction.options.getRole("role");
-
-        if (freeGamesRole) {
-          freeGamesRole.role = role.id;
-
-          await freeGamesRole.save();
-        } else {
-          await FreeGamesRoles.create({
-            guild: interaction.guild.id,
-            role: role.id,
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Set free Epic Games role to ${role}`);
-
-        break;
-
+        return await setRole(interaction);
       case "clear-role":
-        if (freeGamesRole) {
-          await FreeGamesRoles.destroy({
-            where: { guild: interaction.guild.id },
-          });
-        }
-
-        embed = new EmbedBuilder()
-          .setColor("Blurple")
-          .setDescription(`Cleared the free Epic Games role`);
-
-        break;
+        return await clearRole(interaction);
     }
 
     return await interaction.reply({ embeds: [embed], ephemeral: true });
   },
 };
+
+async function setChannel(interaction) {
+  const channel = interaction.options.getChannel("channel");
+  const freeGamesChannel = await FreeGamesChannels.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (freeGamesChannel) {
+    freeGamesChannel.channel = channel.id;
+
+    await freeGamesChannel.save();
+  } else {
+    await FreeGamesChannels.create({
+      guild: interaction.guild.id,
+      channel: channel.id,
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Set free Epic Games channel to ${channel.url}`),
+    ],
+    ephemeral: true,
+  });
+}
+
+async function clearChannel(interaction) {
+  const freeGamesChannel = await FreeGamesChannels.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (freeGamesChannel) {
+    await FreeGamesChannels.destroy({
+      where: { guild: interaction.guild.id },
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Cleared the free Epic Games channel`),
+    ],
+    ephemeral: true,
+  });
+}
+
+async function setRole(interaction) {
+  const role = interaction.options.getRole("role");
+  const freeGamesRole = await FreeGamesRoles.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (freeGamesRole) {
+    freeGamesRole.role = role.id;
+
+    await freeGamesRole.save();
+  } else {
+    await FreeGamesRoles.create({
+      guild: interaction.guild.id,
+      role: role.id,
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Set free Epic Games role to ${role}`),
+    ],
+    ephemeral: true,
+  });
+}
+
+async function clearRole(interaction) {
+  const freeGamesRole = await FreeGamesRoles.findOne({
+    where: { guild: interaction.guild.id },
+  });
+
+  if (freeGamesRole) {
+    await FreeGamesRoles.destroy({
+      where: { guild: interaction.guild.id },
+    });
+  }
+
+  return await interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`Cleared the free Epic Games role`),
+    ],
+    ephemeral: true,
+  });
+}
