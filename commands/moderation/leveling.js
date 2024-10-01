@@ -43,58 +43,60 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
-    const role = interaction.options.getRole("role");
-    let embed;
-
-    const levelRole = await LevelRoles.findOne({
-      where: { role: role.id, guild: interaction.guild.id },
-    });
 
     switch (subcommand) {
       case "add-role-reward":
-        const level = interaction.options.getInteger("level");
-        const levelText = bold(`Level ${level}`);
-
-        if (levelRole) {
-          levelRole.level = level;
-
-          await levelRole.save();
-
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(`Updated role ${role} to be given at ${levelText}`);
-        } else {
-          LevelRoles.create({
-            role: role.id,
-            guild: interaction.guild.id,
-            level,
-          });
-
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(`Set role ${role} to be given at ${levelText}`);
-        }
-
-        break;
-
+        return await addRoleReward(interaction);
       case "remove-role-reward":
-        if (levelRole) {
-          LevelRoles.destroy({
-            where: { role: role.id, guild: interaction.guild.id },
-          });
-
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(`Deleted role reward ${role}`);
-        } else {
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(`There was not a reward set for ${role}`);
-        }
-
-        break;
+        return await removeRoleReward(interaction);
     }
-
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
   },
 };
+
+async function addRoleReward(interaction) {
+  const level = interaction.options.getInteger("level");
+  const role = interaction.options.getRole("role");
+  const levelText = bold(`Level ${level}`);
+  const levelRole = await LevelRoles.findOne({
+    where: { role: role.id, guild: interaction.guild.id },
+  });
+  const embed = new EmbedBuilder().setColor("Blurple");
+
+  if (levelRole) {
+    levelRole.level = level;
+
+    await levelRole.save();
+
+    embed.setDescription(`Updated role ${role} to be given at ${levelText}`);
+  } else {
+    LevelRoles.create({
+      role: role.id,
+      guild: interaction.guild.id,
+      level,
+    });
+
+    embed.setDescription(`Set role ${role} to be given at ${levelText}`);
+  }
+
+  return await interaction.reply({ embeds: [embed], ephemeral: true });
+}
+
+async function removeRoleReward(interaction) {
+  const role = interaction.options.getRole("role");
+  const levelRole = await LevelRoles.findOne({
+    where: { role: role.id, guild: interaction.guild.id },
+  });
+  const embed = new EmbedBuilder().setColor("Blurple");
+
+  if (levelRole) {
+    LevelRoles.destroy({
+      where: { role: role.id, guild: interaction.guild.id },
+    });
+
+    embed.setDescription(`Deleted role reward ${role}`);
+  } else {
+    embed.setDescription(`There was not a reward set for ${role}`);
+  }
+
+  return await interaction.reply({ embeds: [embed], ephemeral: true });
+}
