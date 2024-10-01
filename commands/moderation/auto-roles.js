@@ -89,6 +89,7 @@ module.exports = {
       });
       const guild = await client.guilds.cache.get(guildId);
 
+      await guild.members.fetch();
       guild.members.cache.forEach((member) => {
         member.roles.add(
           autoRoles
