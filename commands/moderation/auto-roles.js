@@ -106,12 +106,10 @@ async function addRole(interaction) {
   const autoRole = await AutoRoles.findOne({
     where: { role: role.id, guild: interaction.guild.id, botOnly },
   });
-  let embed;
+  const embed = new EmbedBuilder().setColor("Blurple");
 
   if (autoRole) {
-    embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription(`This role is already in auto roles`);
+    embed.setDescription(`This role is already in auto roles`);
   } else {
     AutoRoles.create({
       role: role.id,
@@ -119,9 +117,7 @@ async function addRole(interaction) {
       botOnly,
     });
 
-    embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription(`Added auto role ${role}!`);
+    embed.setDescription(`Added auto role ${role}!`);
   }
 
   return await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -133,20 +129,16 @@ async function removeRole(interaction) {
   const autoRole = await AutoRoles.findOne({
     where: { role: role.id, guild: interaction.guild.id, botOnly },
   });
-  let embed;
+  const embed = new EmbedBuilder().setColor("Blurple");
 
   if (autoRole) {
     AutoRoles.destroy({
       where: { role: role.id, guild: interaction.guild.id, botOnly },
     });
 
-    embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription(`Removed auto role ${role}`);
+    embed.setDescription(`Removed auto role ${role}`);
   } else {
-    embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription(`${role} is not in auto roles`);
+    embed.setDescription(`${role} is not in auto roles`);
   }
 
   return await interaction.reply({ embeds: [embed], ephemeral: true });
