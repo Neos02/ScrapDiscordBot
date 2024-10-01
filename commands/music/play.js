@@ -42,14 +42,12 @@ module.exports = {
           title: result.data.items[0].snippet.title,
           id: result.data.items[0].id.videoId,
         };
-        let embed;
+        const embed = new EmbedBuilder().setColor("Blurple");
 
         AudioQueue.enqueue(interaction.guild.id, video);
 
         if (AudioQueue.isPlaying(interaction.guild.id)) {
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(`Added ${bold(video.title)} to queue!`);
+          embed.setDescription(`Added ${bold(video.title)} to queue!`);
         } else {
           const player = createPlayer(interaction.guild.id);
 
@@ -57,13 +55,11 @@ module.exports = {
           connection.subscribe(player);
           player.play(await getNextResource(interaction.guild.id));
 
-          embed = new EmbedBuilder()
-            .setColor("Blurple")
-            .setDescription(
-              `Playing ${bold(video.title)} in ${
-                interaction.member.voice.channel
-              }`
-            );
+          embed.setDescription(
+            `Playing ${bold(video.title)} in ${
+              interaction.member.voice.channel
+            }`
+          );
         }
 
         interaction.editReply({ embeds: [embed] });

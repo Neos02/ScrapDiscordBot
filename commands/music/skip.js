@@ -30,10 +30,10 @@ module.exports = {
       AudioQueue.destroyPlayer(interaction.guild.id);
     }
 
-    const embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription("Skipped!");
-
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder().setColor("Blurple").setDescription("Skipped!"),
+      ],
+    });
   },
 };

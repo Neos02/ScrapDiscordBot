@@ -25,10 +25,10 @@ module.exports = {
 
     player.unpause();
 
-    const embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription("Paused!");
-
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder().setColor("Blurple").setDescription("Resuming!"),
+      ],
+    });
   },
 };

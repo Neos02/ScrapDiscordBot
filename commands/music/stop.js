@@ -26,10 +26,12 @@ module.exports = {
     AudioQueue.destroyPlayer(interaction.guild.id);
     connection.destroy();
 
-    const embed = new EmbedBuilder()
-      .setColor("Blurple")
-      .setDescription("Music has been stopped");
-
-    return await interaction.reply({ embeds: [embed], ephemeral: true });
+    return await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("Blurple")
+          .setDescription("Music has been stopped"),
+      ],
+    });
   },
 };
